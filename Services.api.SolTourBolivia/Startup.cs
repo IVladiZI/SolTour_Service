@@ -43,6 +43,8 @@ namespace Services.api.SolTourBolivia
 
             services.AddTransient<IPersonRepository, PersonRepository>();
 
+            services.AddScoped(typeof(IMongoRepository<>),typeof(MongoRepository<>));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

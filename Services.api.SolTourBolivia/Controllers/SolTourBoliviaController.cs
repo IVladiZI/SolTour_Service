@@ -14,16 +14,25 @@ namespace Services.api.SolTourBolivia.Controllers
     public class SolTourBoliviaController : ControllerBase
     {
         private readonly IPersonRepository _personRepository;
+        private readonly IMongoRepository<PersonEntity> _personGenericRepository; 
 
-        public SolTourBoliviaController(IPersonRepository personRepository)
+        public SolTourBoliviaController(IPersonRepository personRepository, IMongoRepository<PersonEntity> personGenericRepository)
         {
             _personRepository = personRepository;
+            _personGenericRepository = personGenericRepository;
         }
 
-        [HttpGet("persons")]
+        [HttpGet("personGeneric")]
+        public async Task<ActionResult<PersonEntity>> GetPersonGeneric()
+        {
+            var person = await _personGenericRepository.GetAll();
+            return Ok(person);
+        }
+
+        [HttpGet("person")]
         public async Task<ActionResult<Person>> GetPerson()
         {
-            var person = await _personRepository.GetPersons();
+            var person = await _personRepository.GetPerson();
             return Ok(person);
         }
     }

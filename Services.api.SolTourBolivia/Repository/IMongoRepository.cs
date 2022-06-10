@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Services.api.SolTourBolivia.Repository
 {
-    public interface IPersonRepository
+    public interface IMongoRepository<TDocument> where TDocument : IDocument
     {
-        Task<IEnumerable<Person>> GetPerson();
+        Task<IEnumerable<TDocument>> GetAll();
     }
 }
