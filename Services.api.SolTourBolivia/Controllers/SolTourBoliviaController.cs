@@ -30,7 +30,7 @@ namespace Services.api.SolTourBolivia.Controllers
         }
 
         [HttpGet("person")]
-        public async Task<ActionResult<Person>> GetPerson()
+        public async Task<ActionResult<Core.Entities.Person>> GetPerson()
         {
             var person = await _personRepository.GetPerson();
             return Ok(person);
