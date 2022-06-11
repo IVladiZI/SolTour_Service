@@ -5,6 +5,7 @@ using Services.api.SolTourBolivia.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Services.api.SolTourBolivia.Repository
@@ -50,6 +51,32 @@ namespace Services.api.SolTourBolivia.Repository
         {
             var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
             await _collection.FindOneAndDeleteAsync(filter);
+        }
+
+        public async Task<PaginationEntity<TDocument>> PaginationBy(Expression<Func<TDocument, bool>> filterExpression, PaginationEntity<TDocument> paginationEntity)
+        {
+            var sort = Builders<TDocument>.Sort.Ascending(paginationEntity.Sort);
+            if (paginationEntity.SortDirection == "desc")
+                sort = Builders<TDocument>.Sort.Descending(paginationEntity.Sort);
+            if (String.IsNullOrEmpty(paginationEntity.filter))
+            {
+                paginationEntity.Document = await _collection.Find(p => true)
+                    .Sort(sort)
+                    .Skip((paginationEntity.Page-1)*paginationEntity.PageSize)
+                    .Limit(paginationEntity.PageSize)
+                    .ToListAsync();
+            }else
+                paginationEntity.Document = await _collection.Find(filterExpression)
+                    .Sort(sort)
+                    .Skip((paginationEntity.Page - 1) * paginationEntity.PageSize)
+                    .Limit(paginationEntity.PageSize)
+                    .ToListAsync();
+            long totalDocument = await _collection.CountDocumentsAsync(FilterDefinition<TDocument>.Empty);
+            var totalPages = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(totalDocument / paginationEntity.PageSize)));
+
+            paginationEntity.PageQuantity = totalPages;
+
+            return paginationEntity;
         }
     }
 }

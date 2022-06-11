@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Services.api.SolTourBolivia.Repository
@@ -13,5 +14,9 @@ namespace Services.api.SolTourBolivia.Repository
         Task InserDocument(TDocument document);
         Task UpdateDocument(TDocument document);
         Task DeleteDocument(string id);
+        Task<PaginationEntity<TDocument>> PaginationBy(
+            Expression<Func<TDocument,bool>> filterExpression,
+            PaginationEntity<TDocument> paginationEntity
+        );
     }
 }
