@@ -11,8 +11,16 @@ namespace Services.api.SolTourBolivia.Core.Entities
         public int Page { get; set; }
         public string Sort { get; set; }
         public string SortDirection { get; set; }
-        public string filter { get; set; }
+        public string Filter { get; set; }
+        public FilterValue FilterValue { get; set; }
         public int PageQuantity { get; set; }
         public IEnumerable<TDocument> Document { get; set; }
+        public int TotalRows { get; set; }
+    }
+
+    public class FilterValue 
+    {
+        public string Property { get; set; }
+        public string Value { get; set; }
     }
 }

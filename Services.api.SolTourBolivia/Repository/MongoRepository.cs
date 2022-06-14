@@ -58,14 +58,15 @@ namespace Services.api.SolTourBolivia.Repository
             var sort = Builders<TDocument>.Sort.Ascending(paginationEntity.Sort);
             if (paginationEntity.SortDirection == "desc")
                 sort = Builders<TDocument>.Sort.Descending(paginationEntity.Sort);
-            if (String.IsNullOrEmpty(paginationEntity.filter))
+            if (String.IsNullOrEmpty(paginationEntity.Filter))
             {
                 paginationEntity.Document = await _collection.Find(p => true)
                     .Sort(sort)
-                    .Skip((paginationEntity.Page-1)*paginationEntity.PageSize)
+                    .Skip((paginationEntity.Page - 1) * paginationEntity.PageSize)
                     .Limit(paginationEntity.PageSize)
                     .ToListAsync();
-            }else
+            }
+            else
                 paginationEntity.Document = await _collection.Find(filterExpression)
                     .Sort(sort)
                     .Skip((paginationEntity.Page - 1) * paginationEntity.PageSize)
@@ -75,6 +76,43 @@ namespace Services.api.SolTourBolivia.Repository
             var totalPages = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(totalDocument / paginationEntity.PageSize)));
 
             paginationEntity.PageQuantity = totalPages;
+
+            return paginationEntity;
+        }
+        public async Task<PaginationEntity<TDocument>> PaginationByFilter(PaginationEntity<TDocument> paginationEntity)
+        {
+            var sort = Builders<TDocument>.Sort.Ascending(paginationEntity.Sort);
+            if (paginationEntity.SortDirection == "desc")
+                sort = Builders<TDocument>.Sort.Descending(paginationEntity.Sort);
+
+            long totalDocument = 0;
+            if (paginationEntity.FilterValue == null)
+            {
+                paginationEntity.Document = await _collection.Find(p => true)
+                    .Sort(sort)
+                    .Skip((paginationEntity.Page - 1) * paginationEntity.PageSize)
+                    .Limit(paginationEntity.PageSize)
+                    .ToListAsync();
+                totalDocument = (await _collection.Find(p => true).ToListAsync()).Count();
+            }
+            else
+            {
+                var valueFileter = ".*" + paginationEntity.FilterValue.Value + ".*";
+                var filter = Builders<TDocument>.Filter.Regex(paginationEntity.FilterValue.Property, new MongoDB.Bson.BsonRegularExpression(valueFileter, "i"));
+
+                paginationEntity.Document = await _collection.Find(filter)
+                    .Sort(sort)
+                    .Skip((paginationEntity.Page - 1) * paginationEntity.PageSize)
+                    .Limit(paginationEntity.PageSize)
+                    .ToListAsync();
+            }
+
+            totalDocument = await _collection.CountDocumentsAsync(FilterDefinition<TDocument>.Empty);
+            var rounded = Math.Ceiling(totalDocument / Convert.ToDecimal(paginationEntity.PageSize));
+            var totalPages = Convert.ToInt32(rounded);
+            paginationEntity.PageQuantity = totalPages;
+
+            paginationEntity.TotalRows = Convert.ToInt32(totalDocument);
 
             return paginationEntity;
         }

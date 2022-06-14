@@ -50,6 +50,12 @@ namespace Services.api.SolTourBolivia
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Services.api.SolTourBolivia", Version = "v1" });
             });
+
+            services.AddCors(opt => {
+                opt.AddPolicy("CorsRule", rule => {
+                    rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("*");
+                });            
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +67,6 @@ namespace Services.api.SolTourBolivia
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Services.api.SolTourBolivia v1"));
             }
-
             var builder = new ConfigurationBuilder()
             .SetBasePath(env.ContentRootPath)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -72,6 +77,8 @@ namespace Services.api.SolTourBolivia
 
 
             app.UseRouting();
+
+            app.UseCors("CorsRule");
 
             app.UseAuthorization();
 

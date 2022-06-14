@@ -24,7 +24,15 @@ namespace Services.api.SolTourBolivia.Controllers
         public async Task<ActionResult<PaginationEntity<TouristPlaceEntity>>> PostPagination(PaginationEntity<TouristPlaceEntity> paginationEntity)
         {
             var result = await _touristPlaceGenericRepository.PaginationBy(
-                filter => filter.Name == paginationEntity.filter,
+                filter => filter.Name == paginationEntity.Filter,
+                paginationEntity
+                );
+            return Ok(result);
+        }
+        [HttpPost("pagination_filter")]
+        public async Task<ActionResult<PaginationEntity<TouristPlaceEntity>>> PostPaginationFilter(PaginationEntity<TouristPlaceEntity> paginationEntity)
+        {
+            var result = await _touristPlaceGenericRepository.PaginationByFilter(
                 paginationEntity
                 );
             return Ok(result);

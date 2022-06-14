@@ -18,5 +18,8 @@ namespace Services.api.SolTourBolivia.Repository
             Expression<Func<TDocument,bool>> filterExpression,
             PaginationEntity<TDocument> paginationEntity
         );
+        Task<PaginationEntity<TDocument>> PaginationByFilter(
+            PaginationEntity<TDocument> paginationEntity
+        );
     }
 }
