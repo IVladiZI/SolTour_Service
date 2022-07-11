@@ -8,6 +8,6 @@ namespace Services.api.SolTourBolivia.Repository
 {
     public interface IPersonRepository
     {
-        Task<IEnumerable<Person>> GetPerson();
+        Task<IEnumerable<User>> GetPerson();
     }
 }

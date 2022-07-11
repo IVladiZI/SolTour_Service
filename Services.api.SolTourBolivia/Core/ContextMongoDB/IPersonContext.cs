@@ -9,7 +9,7 @@ namespace Services.api.SolTourBolivia.Core.ContextMongoDB
 {
     public interface IPersonContext
     {
-        IMongoCollection<Person> Persons { get; }
+        IMongoCollection<User> Persons { get; }
 
     }
 }

@@ -15,7 +15,7 @@ namespace Services.api.SolTourBolivia.Repository
         {
             _personContext = personContext;
         }
-        public async Task<IEnumerable<Person>> GetPerson()
+        public async Task<IEnumerable<User>> GetPerson()
         {
             return await _personContext.Persons.Find(p => true).ToListAsync();
         }

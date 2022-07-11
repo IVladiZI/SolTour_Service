@@ -16,7 +16,7 @@ namespace Services.api.SolTourBolivia.Core.ContextMongoDB
             var client = new MongoClient(options.Value.ConnectionString);
             _db = client.GetDatabase(options.Value.Database);
         }
-        public IMongoCollection<Person> Persons => _db.GetCollection<Person>("Person");
+        public IMongoCollection<User> Persons => _db.GetCollection<User>("Person");
 
     }
 }

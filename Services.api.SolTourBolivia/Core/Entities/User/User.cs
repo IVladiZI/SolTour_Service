@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Services.api.SolTourBolivia.Core.Entities
 {
-    public class Person
+    public class User
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -26,5 +26,7 @@ namespace Services.api.SolTourBolivia.Core.Entities
         public DateTime Date { get; set; }
         [BsonElement("state")]
         public bool State { get; set; }
+        [BsonElement("email")]
+        public DateTime Email { get; set; }
     }
 }

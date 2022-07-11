@@ -6,8 +6,21 @@ using System.Threading.Tasks;
 
 namespace Services.api.SolTourBolivia.Core.Entities
 {
-    [BsonCollection("Person")]
-    public class PersonEntity : Document
+    [BsonCollection("User")]
+    public class UserEntity : Document
+    {
+        [BsonElement("userName")]
+        public string UserName { get; set; }
+        [BsonElement("password")]
+        public string Password { get; set; }
+        [BsonElement("person")]
+        public PersonEntity Person { get; set; }
+        [BsonElement("state")]
+        public bool State { get; set; }
+
+    }
+
+    public class PersonEntity
     {
         [BsonElement("documentNumber")]
         public string DocumentNumber { get; set; }
@@ -19,9 +32,11 @@ namespace Services.api.SolTourBolivia.Core.Entities
         public string FirstLastName { get; set; }
         [BsonElement("secondLastName")]
         public string SecondLastName { get; set; }
+        [BsonElement("nationality")]
+        public string Nationality { get; set; }
         [BsonElement("date")]
         public DateTime Date { get; set; }
-        [BsonElement("state")]
-        public bool State { get; set; }
+        [BsonElement("email")]
+        public DateTime Email { get; set; }
     }
 }

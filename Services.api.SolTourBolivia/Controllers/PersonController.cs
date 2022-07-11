@@ -13,33 +13,33 @@ namespace Services.api.SolTourBolivia.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
-        private readonly IMongoRepository<PersonEntity> _personGenericRepository;
-        public PersonController(IMongoRepository<PersonEntity> personGenericRepository)
+        private readonly IMongoRepository<UserEntity> _personGenericRepository;
+        public PersonController(IMongoRepository<UserEntity> personGenericRepository)
         {
             _personGenericRepository = personGenericRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PersonEntity>>> Get()
+        public async Task<ActionResult<IEnumerable<UserEntity>>> Get()
         {
             return Ok(await _personGenericRepository.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<PersonEntity>>> GetById(string id)
+        public async Task<ActionResult<IEnumerable<UserEntity>>> GetById(string id)
         {
             var person = await _personGenericRepository.GetById(id);
             return Ok(person);
         }
 
         [HttpPost]
-        public async Task Post(PersonEntity personEntity)
+        public async Task Post(UserEntity personEntity)
         {
             await _personGenericRepository.InserDocument(personEntity);
         }
 
         [HttpPut("{id}")]
-        public async Task Put(string id, PersonEntity personEntity)
+        public async Task Put(string id, UserEntity personEntity)
         {
             personEntity.Id = id;
             await _personGenericRepository.UpdateDocument(personEntity);
